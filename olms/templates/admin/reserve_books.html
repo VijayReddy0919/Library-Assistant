@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserve Books</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Reserve Books for Students</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="student_id">Select Student:</label>
+                <select name="student_id" id="student_id" class="form-control">
+                    {% for student in students %}
+                        <option value="{{ student.id }}">{{ student.admin.first_name }} {{ student.admin.last_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="book_id">Select Book:</label>
+                <select name="book_id" id="book_id" class="form-control">
+                    {% for book in books %}
+                        <option value="{{ book.id }}">{{ book.bookname }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Reserve Book</button>
+        </form>
+    </div>
+</body>
+</html>

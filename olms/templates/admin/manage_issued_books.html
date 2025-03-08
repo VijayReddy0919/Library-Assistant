@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Manage Issued Books</h4>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <table class="table table-bordered border-primary">
+                    <thead>
+                        <tr>
+                            <th style="font-weight: bolder;">#</th>
+                            <th style="font-weight: bolder;">Book ID</th>
+                            <th style="font-weight: bolder;">Student ID</th>
+                            <th style="font-weight: bolder;">Issued Date</th>
+                            <th style="font-weight: bolder;">Return Date</th>
+                            <th style="font-weight: bolder;">Return Status</th>
+                            <th style="font-weight: bolder;">Fine</th>
+                            <th style="font-weight: bolder;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for issued_book in issued_books %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ issued_book.book_id.id }}</td>
+                            <td>{{ issued_book.stud_id.id }}</td>
+                            <td>{{ issued_book.issued_date }}</td>
+                            <td>{{ issued_book.return_date }}</td>
+                            <td>{{ issued_book.return_status }}</td>
+                            <td>{{ issued_book.fine }}</td>
+                            <td>
+                                <a href="{% url 'details_view' issued_book.id %}" class="btn btn-success btn-sm">Details</a>
+                                <a href="{% url 'delete_view' issued_book.id %}" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="pagination" style="padding-top: 10px; text-align: center;">
+                    <span class="step-links">
+                        {% if issued_books.has_previous %}
+                            <a href="?page=1">&laquo; first</a>
+                            <a href="?page={{ issued_books.previous_page_number }}">previous</a>
+                        {% endif %}
+                        <span class="current">Page {{ issued_books.number }} of {{ issued_books.paginator.num_pages }}.</span>
+                        {% if issued_books.has_next %}
+                            <a href="?page={{ issued_books.next_page_number }}">next</a>
+                            <a href="?page={{ issued_books.paginator.num_pages }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
